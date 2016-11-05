@@ -1,0 +1,13 @@
+# idea
+.idea
+
+# Node
+npm-debug.log
+/node_modules
+/packages/*/npm-debug.log
+/packages/*/node_modules/
+/packages/*/build/
+
+# Lerna
+lerna-debug.log
+
