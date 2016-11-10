@@ -19,6 +19,13 @@
     "eslint-test-rules": "./bin/eslint-test-rules"
   },
   "author": "Jan-André Zinser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zinserjan/eslint-config"
+  },
+  "bugs": {
+    "url": "https://github.com/zinserjan/eslint-config/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "chalk": "^1.1.3",
