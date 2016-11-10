@@ -23,6 +23,11 @@ type TestReport = {
   summary: string,
   detail?: string,
 }
+type TestResults = {
+  report: string,
+  passes: number,
+  errors: number,
+}
 
 const passedGood = (result: EslintResult): boolean => result.errorCount === 0 && result.warningCount === 0;
 const passedError = (result: EslintResult): boolean => result.errorCount > 0 && result.warningCount === 0;
@@ -63,11 +68,11 @@ const createReport = (result: EslintResult, check: (result: EslintResult) => boo
     passed,
     title: result.filePath,
     summary: passed ? "Lint passed" : "Lint failed",
-    detail: passed ? null : formatMessages(result.messages)
+    detail: result.messages.length === 0 ? null : formatMessages(result.messages)
   };
 };
 
-const checkResults = (results: Array<EslintResult>, type: string, check: (result: EslintResult) => boolean): string => {
+const checkResults = (results: Array<EslintResult>, type: string, check: (result: EslintResult) => boolean): TestResults => {
   const reports: Array<TestReport> = results.map((result) => createReport(result, check));
 
   const reportResults: Array<string> = table(reports.map((report) => [
@@ -82,7 +87,7 @@ const checkResults = (results: Array<EslintResult>, type: string, check: (result
     }
   }).split("\n");
 
-  return reportResults.map((report, index) => {
+  const report = reportResults.map((report, index) => {
     const fullReport = [
       report,
     ];
@@ -93,16 +98,22 @@ const checkResults = (results: Array<EslintResult>, type: string, check: (result
     }
     return fullReport.join("\n");
   }).join("\n\n");
+
+  return {
+    report,
+    passes: reports.filter((report) => report.passed).length,
+    errors: reports.filter((report) => !report.passed).length,
+  }
 };
 
-export function checkGood(results: Array<EslintResult>): string {
+export function checkGood(results: Array<EslintResult>): TestResults {
   return checkResults(results, "good", passedGood);
 }
 
-export function checkError(results: Array<EslintResult>): string {
+export function checkError(results: Array<EslintResult>): TestResults {
   return checkResults(results, "error", passedError);
 }
 
-export function checkWarning(results: Array<EslintResult>): string {
+export function checkWarning(results: Array<EslintResult>): TestResults {
   return checkResults(results, "warn", passedWarning);
 }
