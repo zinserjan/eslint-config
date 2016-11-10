@@ -1,0 +1,20 @@
+{
+  "name": "eslint-config-react",
+  "version": "0.0.0",
+  "description": "A set of opinionated ESLint rules tailored for React Components",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint-test-rules --good \"./rules/**/*.good.js\" --warn \"./rules/**/*.warn.js\" --error \"./rules/**/*.error.js\""
+  },
+  "author": "Jan-André Zinser",
+  "license": "MIT",
+  "dependencies": {
+    "eslint-plugin-react": "^6.6.0"
+  },
+  "peerDependencies": {
+    "eslint": "^3.9.1"
+  },
+  "devDependencies": {
+    "eslint-test-rules": "*"
+  }
+}
