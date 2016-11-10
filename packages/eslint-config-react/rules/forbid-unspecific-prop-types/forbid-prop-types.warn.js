@@ -1,3 +1,5 @@
+/* eslint-disable react/prefer-stateless-function */
+
 const React = require("react");
 
 class Component extends React.Component {

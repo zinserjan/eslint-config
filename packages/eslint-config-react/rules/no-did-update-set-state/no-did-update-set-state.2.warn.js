@@ -1,3 +1,7 @@
+/* eslint-disable react/prop-types */
+
+const React = require("react");
+
 class Hello extends React.Component {
   componentDidUpdate() {
     this.setState({
