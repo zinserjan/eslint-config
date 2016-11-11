@@ -9,6 +9,7 @@ module.exports = {
     }
   },
   rules: {
+    // eslint-plugin-react basic react rules
     "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
     "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
@@ -30,5 +31,10 @@ module.exports = {
     "react/sort-comp": ["warn"],
     "react/style-prop-object": ["error"],
     "react/self-closing-comp": ["warn", { component: true, html: true }],
+    // eslint-plugin-react jsx specific rules
+    "react/jsx-boolean-value": ["warn", "never"],
+    "react/jsx-closing-bracket-location": ["warn", "after-props"],
+    "react/jsx-curly-spacing": ["warn", "never", { "allowMultiline": false }],
+    "react/jsx-first-prop-new-line": ["warn", "multiline-multiprop"],
   }
 };

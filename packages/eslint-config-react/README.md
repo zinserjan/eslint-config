@@ -571,3 +571,103 @@ const styles = { color: "red" };
 ```
 
 -----
+
+### Enforce boolean attributes notation in JSX (Fixable)
+
+When using boolean attributes you should always omit the value when the value is `true`.
+
+**warn**
+```js
+var Hello = <Hello personal={true} />;
+```
+
+**good**
+```js
+var Hello = <Hello personal />;
+```
+
+-----
+
+### Closing bracket location in JSX
+
+Enforce the closing bracket location for JSX multiline elements.
+
+**warn**
+```js
+<Hello
+  firstName="John"
+  lastName="Smith"
+  />;
+
+<Say
+  firstName="John"
+  lastName="Smith"
+>
+  Hello
+</Say>;
+```
+
+**good**
+```js
+<Hello
+  firstName="John"
+  lastName="Smith" />;
+
+<Say
+  firstName="John"
+  lastName="Smith">
+  Hello
+</Say>;
+```
+
+-----
+
+### No spaces inside of curly braces in JSX attributes
+
+**warn**
+```js
+<Hello name={ firstname } />;
+<Hello name={ firstname} />;
+<Hello name={firstname } />;
+
+<Hello name={ { firstname: 'John', lastname: 'Doe' } } />;
+```
+
+**good**
+```js
+<Hello name={firstname} />;
+<Hello name={{ firstname: 'John', lastname: 'Doe' }} />;
+```
+
+-----
+
+### Position of the first property (Fixable)
+
+Ensures the correct position of the first property.
+
+**warn**
+```js
+<Hello
+    personal />
+
+<Hello personal={true}
+    foo="bar"
+/>
+
+<Hello foo={{
+}} />
+```
+
+**good**
+```js
+<Hello personal />
+
+<Hello
+  personal={true}
+  foo="bar"
+/>
+
+<Hello foo={{}} />
+```
+
+-----
