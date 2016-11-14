@@ -60,5 +60,10 @@ module.exports = {
     }],
     "react/jsx-uses-react": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
     "react/jsx-uses-vars": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
+    "react/jsx-wrap-multilines": ["warn", {
+      declaration: true,
+      assignment: true,
+      return: true
+    }],
   }
 };

@@ -109,8 +109,8 @@ React.createElement("Hello", { dangerouslySetInnerHTML: { __html: "HTML" } }, "C
 ```js
 const React = require("react");
 
-const a = <div dangerouslySetInnerHTML={{ __html: "HTML" }}/>;
-const b = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }}/>;
+const a = <div dangerouslySetInnerHTML={{ __html: "HTML" }} />;
+const b = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }} />;
 const c = <div>
   Children
 </div>;
@@ -830,21 +830,61 @@ Creating JSX elements with duplicate props can cause unexpected behavior in your
 
 -----
 
-### Disallow undeclared variables in JSX
 
-This rule helps locate potential ReferenceErrors resulting from misspellings or missing components.
+### Parentheses around multiline JSX (Fixable)
 
-**error**
+Wrapping multiline JSX in parentheses improves readability.
+
+
+**warn**
 ```js
-<Hello name="John" />;
+
+const test = <div>
+  Test
+ </div>;
+
+let test2;
+
+test2 = <div>
+  Test
+ </div>;
+
+
+function Test() {
+  return (
+    <div>
+      Test
+    </div>
+  );
+}
+
 ```
 
 **good**
 ```js
-var Hello = require('./Hello');
+const test =(
+  <div>
+    Test
+  </div>
+);
 
-<Hello name="John" />;
+let test2;
+test2 =(
+  <div>
+    Test
+  </div>
+);
+
+function Test() {
+  return (
+    <div>
+      Test
+    </div>
+  );
+}
 ```
 
 -----
+
+
 

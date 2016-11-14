@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope, react/jsx-no-undef */
+/* eslint-disable react/react-in-jsx-scope, react/jsx-no-undef, react/jsx-wrap-multilines */
 
 const x = <div dangerouslySetInnerHTML={{ __html: "HTML" }}>
   Children
