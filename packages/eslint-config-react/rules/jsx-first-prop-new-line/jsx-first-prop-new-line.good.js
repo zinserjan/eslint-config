@@ -1,10 +1,10 @@
-/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/react-in-jsx-scope, react/jsx-no-undef */
 
 const a = <Hello personal />;
 
 const b = <Hello
-            personal
-            foo="bar" />;
+  personal
+  foo="bar" />;
 
 const c = <Hello foo={{}} />;
 

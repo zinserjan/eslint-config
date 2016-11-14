@@ -1,4 +1,4 @@
-const React = require("react");
+/* eslint-disable react/prop-types, react/react-in-jsx-scope */
 
 class MyComponent extends React.Component {
   componentDidMount() {

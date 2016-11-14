@@ -34,7 +34,31 @@ module.exports = {
     // eslint-plugin-react jsx specific rules
     "react/jsx-boolean-value": ["warn", "never"],
     "react/jsx-closing-bracket-location": ["warn", "after-props"],
-    "react/jsx-curly-spacing": ["warn", "never", { "allowMultiline": false }],
+    "react/jsx-curly-spacing": ["warn", "never", { allowMultiline: false }],
     "react/jsx-first-prop-new-line": ["warn", "multiline-multiprop"],
+    "react/jsx-equals-spacing": ["warn", "never"],
+    "react/jsx-handler-names": ["warn", {
+      eventHandlerPrefix: "handle",
+      eventHandlerPropPrefix: "on"
+    }],
+    "react/jsx-indent": ["warn", 2],
+    "react/jsx-indent-props": ["warn", 2],
+    "react/jsx-no-bind": ["warn", {
+      ignoreRefs: true,
+      allowArrowFunctions: false,
+      allowBind: false
+    }],
+    "react/jsx-no-comment-textnodes": ["error"],
+    "react/jsx-no-duplicate-props": ["error", { ignoreCase: false }],
+    "react/jsx-no-undef": ["error"],
+    "react/jsx-pascal-case": ["warn"],
+    "react/jsx-space-before-closing": ["warn"],
+    "react/jsx-tag-spacing": ["warn", {
+      closingSlash: "never",
+      beforeSelfClosing: "always",
+      afterOpening: "never"
+    }],
+    "react/jsx-uses-react": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
+    "react/jsx-uses-vars": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
   }
 };

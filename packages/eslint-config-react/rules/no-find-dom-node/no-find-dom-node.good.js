@@ -1,4 +1,4 @@
-const React = require("react");
+/* eslint-disable react/prop-types, react/react-in-jsx-scope */
 
 class MyComponent extends React.Component {
   componentDidMount() {
@@ -6,6 +6,6 @@ class MyComponent extends React.Component {
   }
 
   render() {
-    return <div ref={node => this.node = node}/>
+    return <div ref={node => this.node = node} />
   }
 }

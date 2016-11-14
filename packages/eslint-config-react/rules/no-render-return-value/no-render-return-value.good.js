@@ -1,4 +1,4 @@
-const React = require("react");
+/* eslint-disable react/react-in-jsx-scope, react/jsx-no-undef */
 
 ReactDOM.render(<App ref={doSomethingWithInst} />, document.body);
 

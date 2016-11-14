@@ -671,3 +671,180 @@ Ensures the correct position of the first property.
 ```
 
 -----
+
+### Spaces around equal signs in JSX attributes (Fixable)
+
+
+**warn**
+```js
+<Hello name = {firstname} />;
+<Hello name ={firstname} />;
+<Hello name= {firstname} />;
+```
+
+**good**
+```js
+<Hello name={firstname} />;
+<Hello name />;
+<Hello {...props} />;
+```
+
+-----
+
+### Event handler naming conventions in JSX
+
+Props which are used for event handlers should be prefixed with "on".
+Component methods which are passed to event handlers should be prefixed with "handle".
+
+
+**warn**
+```js
+<MyComponent handleChange={this.handleChange} />
+<MyComponent onChange={this.componentChanged} />
+```
+
+**good**
+```js
+<MyComponent onChange={this.handleChange} />
+<MyComponent onChange={this.props.onFoo} />
+```
+
+-----
+
+### JSX indentation (fixable)
+
+JSX should be indented with 2 spaces.
+
+
+**warn**
+```js
+<App>
+<Hello />
+</App>
+
+<App
+test="test"
+test2="test" />
+
+```
+
+**good**
+```js
+<App>
+  <Hello />
+</App>
+
+<App
+  test="test"
+  test2="test" />
+
+```
+
+-----
+
+### No .bind() or Arrow Functions in JSX Props
+
+A `bind` call or [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) in a JSX prop will create a brand new function on every single render. This is bad for performance, as it will result in the garbage collector being invoked way more than is necessary.
+
+**warn**
+```js
+<div onClick={this._handleClick.bind(this)}></div>
+<div onClick={() => console.log('Hello!'))}></div>
+
+```
+
+**good**
+```js
+
+<div onClick={this._handleClick}></div>
+<div ref={(e) => this.element = e}></div>
+
+```
+
+-----
+
+### Prevent comments from being inserted as text nodes
+
+This rule prevents comment strings (e.g. beginning with // or /*) from being accidentally injected as a text node in JSX statements.
+
+**error**
+```js
+function Comment1() {
+  return (
+    <div>// empty div</div>
+  );
+}
+
+function Comment2() {
+  return (
+    <div>
+      /* empty div */
+    </div>
+  );
+}
+```
+
+**good**
+```js
+function Comment1() {
+  return (
+    <div>{/* empty div */}</div>
+  );
+}
+
+function Comment2() {
+  return (
+    <div /* empty div */></div>
+  );
+}
+
+function Comment3() {
+  return (
+    <div className={'foo' /* temp class */} />
+  );
+}
+
+function Comment4() {
+  return (
+    <div>{'/* This will be output as a text node */'}</div>
+  );
+}
+
+```
+
+-----
+
+### Prevent duplicate properties in JSX
+
+Creating JSX elements with duplicate props can cause unexpected behavior in your application.
+
+**error**
+```js
+<Hello name="John" name="John" />;
+```
+
+**good**
+```js
+<Hello firstname="John" lastname="Doe" />;
+```
+
+-----
+
+### Disallow undeclared variables in JSX
+
+This rule helps locate potential ReferenceErrors resulting from misspellings or missing components.
+
+**error**
+```js
+<Hello name="John" />;
+```
+
+**good**
+```js
+var Hello = require('./Hello');
+
+<Hello name="John" />;
+```
+
+-----
+

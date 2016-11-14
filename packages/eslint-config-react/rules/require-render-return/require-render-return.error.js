@@ -1,6 +1,4 @@
-/* eslint-disable react/prefer-stateless-function */
-
-const React = require("react");
+/* eslint-disable react/react-in-jsx-scope, react/prefer-stateless-function */
 
 class Hello extends React.Component {
   render() {

@@ -1,4 +1,4 @@
-const React = require("react");
+/* eslint-disable react/react-in-jsx-scope */
 
 class Foo extends React.PureComponent {
   render() {

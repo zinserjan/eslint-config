@@ -1,7 +1,7 @@
-const React = require("react");
+/* eslint-disable react/react-in-jsx-scope, react/jsx-no-undef */
 
-const a = <div dangerouslySetInnerHTML={{ __html: "HTML" }}/>;
-const b = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }}/>;
+const a = <div dangerouslySetInnerHTML={{ __html: "HTML" }} />;
+const b = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }} />;
 const c = <div>
   Children
 </div>;

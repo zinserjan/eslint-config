@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
-
-const React = require("react");
+/* eslint-disable react/prop-types, react/react-in-jsx-scope, react/jsx-no-undef */
 
 class Hello extends React.Component {
   componentDidUpdate() {
