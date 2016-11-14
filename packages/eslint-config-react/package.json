@@ -4,7 +4,7 @@
   "description": "A set of opinionated ESLint rules tailored for React Components",
   "main": "index.js",
   "scripts": {
-    "test": "eslint-test-rules --good \"./rules/**/*.good.js\" --warn \"./rules/**/*.warn.js\" --error \"./rules/**/*.error.js\""
+    "test": "eslint-test-rules --good \"./test/**/*.good.js\" --warn \"./test/**/*.warn.js\" --error \"./test/**/*.error.js\""
   },
   "author": "Jan-André Zinser",
   "license": "MIT",
