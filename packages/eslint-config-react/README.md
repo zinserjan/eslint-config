@@ -2,9 +2,34 @@
 
 > A set of opinionated ESLint rules tailored for React Components
 
+## Installation
+
+```bash
+npm install --save-dev @zinserjan/eslint-config-react
+```
+
+**.eslintrc**
+
+```json
+{
+  "extends": [
+     "@zinserjan/eslint-config-react"
+  ]
+}
+```
+
+
+## Overview of rules
+
+1. use double quotes for JSX attributes
+1. always add type definition for properties
+1. prefer stateless functions
+1. define a single ES6 Component per file
+1. multiple stateless functions per file are allowed, when they are related to each other
+
+
 
 ## Rules
------
 
 ### Prevent usage of className & style
 This rule prevents passing of props className & style that [that add lots of complexity](https://medium.com/brigade-engineering/don-t-pass-css-classes-between-components-e9f7ab192785) to Components.
