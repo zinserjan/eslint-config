@@ -9,7 +9,9 @@ module.exports = {
     }
   },
   rules: {
-    // eslint-plugin-react basic react rules
+    // eslint jsx rules
+    "jsx-quotes": ["warn"],
+    // eslint-plugin-react basic rules
     "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
     "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
