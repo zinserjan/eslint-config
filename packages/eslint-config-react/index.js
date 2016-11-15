@@ -30,7 +30,15 @@ module.exports = {
     "react/prop-types": ["warn"],
     "react/react-in-jsx-scope": ["error"],
     "react/require-render-return": ["error"],
-    "react/sort-comp": ["warn"],
+    "react/sort-comp": ["warn", {
+      order: [
+        "type-annotations",
+        "static-methods",
+        "lifecycle",
+        "everything-else",
+        "render"
+      ],
+    }],
     "react/style-prop-object": ["error"],
     "react/self-closing-comp": ["warn", { component: true, html: true }],
     // eslint-plugin-react jsx specific rules
@@ -66,6 +74,6 @@ module.exports = {
       declaration: true,
       assignment: true,
       return: true
-    }],
+    }]
   }
 };
