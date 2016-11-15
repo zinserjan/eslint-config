@@ -1,0 +1,34 @@
+{
+  "name": "@zinserjan/eslint-config-base",
+  "version": "0.0.0",
+  "description": "A set of opinionated ESLint rules tailored for JS development",
+  "main": "index.js",
+  "files": [
+    "*.md",
+    "index.js"
+  ],
+  "scripts": {
+    "test": "eslint-test-rules --good \"./test/**/*.good.js\" --warn \"./test/**/*.warn.js\" --error \"./test/**/*.error.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zinserjan/eslint-config"
+  },
+  "bugs": {
+    "url": "https://github.com/zinserjan/eslint-config/issues"
+  },
+  "author": "Jan-André Zinser",
+  "license": "MIT",
+  "peerDependencies": {
+    "eslint": "^3.9.1"
+  },
+  "dependencies": {
+    "babel-eslint": "^6.1.2"
+  },
+  "devDependencies": {
+    "eslint-test-rules": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
