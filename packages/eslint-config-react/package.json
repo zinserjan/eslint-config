@@ -20,7 +20,7 @@
   "author": "Jan-André Zinser",
   "license": "MIT",
   "dependencies": {
-    "eslint-plugin-react": "^6.7.0"
+    "eslint-plugin-react": "~6.7.0"
   },
   "peerDependencies": {
     "eslint": "^3.9.1"
