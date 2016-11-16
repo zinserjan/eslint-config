@@ -364,6 +364,72 @@ npm install --save-dev @zinserjan/eslint-config-react
   ))}
   ```
 
+  - Do not pass CSS classes & styles between custom components. This rule only applies to Components (e.g. `<Foo />`) and not DOM nodes (e.g. `<div />`). eslint: [`react/forbid-component-props`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-component-props.md)
+
+  > Why? These [add lots of complexity to Components](https://medium.com/brigade-engineering/don-t-pass-css-classes-between-components-e9f7ab192785).
+
+  ```jsx
+  // bad
+  <Hello className='foo' />
+  <Hello style={{color: 'red'}} />
+
+  // good
+  <Hello name='Joe' />
+  <div className='foo' />
+  <div style={{color: 'red'}} />
+  ```
+
+  - Always define propTypes accurately for all props and avoid PropTypes.any, PropTypes.array, PropTypes.object. eslint: [`react/forbid-prop-types`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-prop-types.md)
+  ```jsx
+    // bad
+    class Component extends React.Component {
+      ...
+    }
+    Component.propTypes = {
+      a: React.PropTypes.any,
+      r: React.PropTypes.array,
+      o: React.PropTypes.object
+    };
+
+    class Component extends React.Component {
+      static propTypes = {
+        a: React.PropTypes.any,
+        r: React.PropTypes.array,
+        o: React.PropTypes.object
+      };
+      render() {
+        return <div />;
+      }
+    }
+
+    // good
+    class Component extends React.Component {
+      ...
+    }
+    Component.propTypes = {
+      a: React.PropTypes.string,
+      r: React.PropTypes.arrayOf(PropTypes.string),
+      o: React.PropTypes.shape({
+        id: PropTypes.number.isRequired
+      })
+    };
+
+    class Component extends React.Component {
+      static propTypes = {
+        a: React.PropTypes.string,
+        r: React.PropTypes.arrayOf(PropTypes.string),
+        o: React.PropTypes.shape({
+          id: PropTypes.number.isRequired
+        })
+      };
+      render() {
+        return <div />;
+      }
+    }
+
+
+    ```
+
   - Always define explicit defaultProps for all non-required props.
 
   > Why? propTypes are a form of documentation, and providing defaultProps means the reader of your code doesn’t have to assume as much. In addition, it can mean that your code can omit certain type checks.
@@ -515,6 +581,17 @@ npm install --save-dev @zinserjan/eslint-config-react
         return <div onClick={this.onClickDiv} />
       }
     }
+
+    // good with class properties
+    class extends React.Component {
+      onClickDiv = () => {
+        // do stuff
+      };
+
+      render() {
+        return <div onClick={this.onClickDiv} />
+      }
+    }
     ```
 
   - Do not use underscore prefix for internal methods of a React component.
@@ -558,6 +635,7 @@ npm install --save-dev @zinserjan/eslint-config-react
 
   - Ordering for `class extends React.Component`:
 
+  1. optional type annotations (flowtype)
   1. optional `static` methods
   1. `constructor`
   1. `getChildContext`
@@ -638,8 +716,6 @@ npm install --save-dev @zinserjan/eslint-config-react
 
   - Do not use `isMounted`. eslint: [`react/no-is-mounted`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-is-mounted.md)
 
-  > Why? [`isMounted` is an anti-pattern][anti-pattern], is not available when using ES6 classes, and is on its way to being officially deprecated.
-
-  [anti-pattern]: https://facebook.github.io/react/blog/2015/12/16/ismounted-antipattern.html
+  > Why? [`isMounted` is an anti-pattern](https://facebook.github.io/react/blog/2015/12/16/ismounted-antipattern.html), is not available when using ES6 classes, and is on its way to being officially deprecated.
 
 **[⬆ back to top](#table-of-contents)**
