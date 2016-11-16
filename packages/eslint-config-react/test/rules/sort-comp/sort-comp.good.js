@@ -4,12 +4,46 @@ class Hello extends React.Component {
   static test() {
     // do something
   }
+
+  constructor(props) {
+    super(props);
+  }
+
+  getChildContext() {
+    return {};
+  }
+
+  componentWillMount(){
+  }
+
   componentDidMount() {
-    // do something
+  }
+
+  componentWillReceiveProps() {
+  }
+
+  shouldComponentUpdate() {
+  }
+
+  componentWillUpdate() {
+  }
+
+  componentDidUpdate() {
+  }
+
+  componentWillUnmount() {
   }
 
   onClick() {
     // do something
+  }
+
+  getSelectReason() {
+
+  }
+
+  renderNavigation() {
+
   }
 
   render() {

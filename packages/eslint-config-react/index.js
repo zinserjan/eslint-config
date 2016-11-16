@@ -11,7 +11,7 @@ module.exports = {
   rules: {
     // eslint jsx rules
     "jsx-quotes": ["warn"],
-    "no-multi-spaces": ["warn"], // todo test for this
+    "no-multi-spaces": ["warn"],
     // eslint-plugin-react basic rules
     "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
     "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
@@ -37,9 +37,12 @@ module.exports = {
         "type-annotations",
         "static-methods",
         "lifecycle",
+        "/^on.+$/",
+        "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
         "everything-else",
+        "/^render.+$/",
         "render"
-      ],
+      ]
     }],
     "react/style-prop-object": ["error"],
     "react/self-closing-comp": ["warn", { component: true, html: true }],
