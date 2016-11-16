@@ -3,11 +3,13 @@
 
 const a = (
   <Hello
-    firstName="John" />
+    firstName="John"
+  />
 );
 
 const b = (
   <Hello
     firstName="John"
-    test="tet" />
+    test="tet"
+  />
 );

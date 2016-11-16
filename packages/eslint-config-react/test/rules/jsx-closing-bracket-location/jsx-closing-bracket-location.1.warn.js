@@ -3,6 +3,5 @@
 const x = (
   <Hello
     lastName="Smith"
-    firstName="John"
-  />
+    firstName="John" />
 );

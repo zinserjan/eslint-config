@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/react-in-jsx-scope, no-multi-spaces, react/jsx-closing-bracket-location */
 
 const b = (<input
   className="name"

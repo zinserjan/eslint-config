@@ -2,5 +2,6 @@
 
 const a = (
   <Hello personal
-    foo="bar" />
+    foo="bar"
+  />
 );

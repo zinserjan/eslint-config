@@ -3,8 +3,7 @@
 const y = (
   <Say
     firstName="John"
-    lastName="Smith"
-  >
+    lastName="Smith">
     Hello
   </Say>
 );

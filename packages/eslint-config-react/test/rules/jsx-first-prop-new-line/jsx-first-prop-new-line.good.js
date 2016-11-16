@@ -5,7 +5,8 @@ const a = <Hello personal />;
 const b = (
   <Hello
     personal
-    foo="bar" />
+    foo="bar"
+  />
 );
 
 const c = <Hello foo={{}} />;

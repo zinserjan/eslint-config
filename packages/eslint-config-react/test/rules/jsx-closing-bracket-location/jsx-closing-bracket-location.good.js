@@ -3,13 +3,15 @@
 const x = (
   <Hello
     lastName="Smith"
-    firstName="John" />
+    firstName="John"
+  />
 );
 
 const y = (
   <Say
     firstName="John"
-    lastName="Smith">
+    lastName="Smith"
+  >
     Hello
   </Say>
 );
