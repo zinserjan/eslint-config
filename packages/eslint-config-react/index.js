@@ -1,6 +1,7 @@
 module.exports = {
   plugins: [
-    "react"
+    "react",
+    "jsx-a11y"
   ],
   parserOptions: {
     ecmaVersion: 2015,
@@ -79,11 +80,19 @@ module.exports = {
       declaration: true,
       assignment: true,
       return: true
-    }]
-    // eslint react a11y todo
-   //  "jsx-a11y/img-has-alt"
-   // "jsx-a11y/img-redundant-alt"
-   // "jsx-a11y/aria-role"
-   // "jsx-a11y/no-access-key"
+    }],
+    // eslint react a11y
+    "jsx-a11y/img-has-alt": ["warn"],
+    "jsx-a11y/img-redundant-alt": ["warn"],
+    "jsx-a11y/aria-role": ["warn"],
+    "jsx-a11y/aria-props": ["error"],
+    "jsx-a11y/aria-proptypes": ["error"],
+    "jsx-a11y/role-has-required-aria-props": ["error"],
+    "jsx-a11y/role-supports-aria-props": ["error"],
+    "jsx-a11y/aria-unsupported-elements": ["error"],
+    "jsx-a11y/href-no-hash": ["warn"],
+    "jsx-a11y/label-has-for": ["warn"],
+    "jsx-a11y/tabindex-no-positive": ["warn"],
+    "jsx-a11y/no-access-key": ["error"],
   }
 };
