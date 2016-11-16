@@ -11,11 +11,13 @@ module.exports = {
   rules: {
     // eslint jsx rules
     "jsx-quotes": ["warn"],
+    "no-multi-spaces": ["warn"], // todo test for this
     // eslint-plugin-react basic rules
     "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
     "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
     "react/no-danger-with-children": ["error"],
+    "react/no-is-mounted": ["error"],
     "react/no-find-dom-node": ["warn"],
     "react/no-did-update-set-state": ["warn", "disallow-in-func"],
     "react/no-direct-mutation-state": ["error"],
@@ -43,7 +45,7 @@ module.exports = {
     "react/self-closing-comp": ["warn", { component: true, html: true }],
     // eslint-plugin-react jsx specific rules
     "react/jsx-boolean-value": ["warn", "never"],
-    "react/jsx-closing-bracket-location": ["warn", "after-props"],
+    "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
     "react/jsx-curly-spacing": ["warn", "never", { allowMultiline: false }],
     "react/jsx-first-prop-new-line": ["warn", "multiline-multiprop"],
     "react/jsx-equals-spacing": ["warn", "never"],
@@ -53,7 +55,7 @@ module.exports = {
     }],
     "react/jsx-indent": ["warn", 2],
     "react/jsx-indent-props": ["warn", 2],
-    "react/jsx-no-bind": ["warn", {
+    "react/jsx-no-bind": ["error", {
       ignoreRefs: true,
       allowArrowFunctions: false,
       allowBind: false
@@ -75,5 +77,10 @@ module.exports = {
       assignment: true,
       return: true
     }]
+    // eslint react a11y todo
+   //  "jsx-a11y/img-has-alt"
+   // "jsx-a11y/img-redundant-alt"
+   // "jsx-a11y/aria-role"
+   // "jsx-a11y/no-access-key"
   }
 };

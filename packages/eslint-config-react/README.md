@@ -1,6 +1,6 @@
 # eslint-config-react
 
-> A set of opinionated ESLint rules tailored for React Components
+*A mostly reasonable approach to React and JSX based on the great [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react)*
 
 ## Installation
 
@@ -19,897 +19,627 @@ npm install --save-dev @zinserjan/eslint-config-react
 ```
 
 
-## Overview of rules
+## Table of Contents
 
-1. use double quotes for JSX attributes
-1. always add type definition for properties
-1. prefer stateless functions
-1. define a single ES6 Component per file
-1. multiple stateless functions per file are allowed, when they are related to each other
+  1. [Basic Rules](#basic-rules)
+  1. [Class vs `React.createClass` vs stateless](#class-vs-reactcreateclass-vs-stateless)
+  1. [Naming](#naming)
+  1. [Declaration](#declaration)
+  1. [Alignment](#alignment)
+  1. [Quotes](#quotes)
+  1. [Spacing](#spacing)
+  1. [Props](#props)
+  1. [Refs](#refs)
+  1. [Parentheses](#parentheses)
+  1. [Tags](#tags)
+  1. [Methods](#methods)
+  1. [Ordering](#ordering)
+  1. [`isMounted`](#ismounted)
 
+## Basic Rules
 
+  - Only include one React component per file.
+    - However, multiple [Stateless, or Pure, Components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) are allowed per file. eslint: [`react/no-multi-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-multi-comp.md#ignorestateless).
+  - Avoid usage of `React.createClass`
+  - Always use JSX syntax.
+  - Always add type definition for properties
+  - Do not use `React.createElement` unless you're initializing the app from a file that is not JSX.
 
-## Rules
+## Class vs `React.createClass` vs stateless
 
-### Prevent usage of className & style
-This rule prevents passing of props className & style that [that add lots of complexity](https://medium.com/brigade-engineering/don-t-pass-css-classes-between-components-e9f7ab192785) to Components.
-This rule only applies to Components (e.g. `<Foo />`) and not DOM nodes (e.g. `<div />`).
+  - If you have internal state and/or refs, prefer `class extends React.Component` over `React.createClass`. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
-**warn**
-```js
-const x = <Hello className="hallo" />;
-const y = <Hello style={{display: "none"}} />;
-```
-
-**good**
-```js
-const x = <div className="hallo" />;
-const y = <div style={{display: "none"}} />;
-```
-
------
-
-### Prevent usage of certain propTypes
-
-This rule prevents vague prop types with more specific alternatives available (any, array, object)
-
-**warn**
-```js
-class Component extends React.Component {
-  static propTypes = {
-    a: React.PropTypes.any,
-    r: React.PropTypes.array,
-    o: React.PropTypes.object
-  }
-  render() {
-    return <div />;
-  }
-}
-```
-
-**good**
-```js
-class Component extends React.Component {
-  static propTypes = {
-    a: React.PropTypes.string,
-    r: React.PropTypes.arrayOf(React.PropTypes.string),
-    o: React.PropTypes.shape({ test: React.PropTypes.string })
-  }
-  render() {
-    return <div />;
-  }
-}
-```
-
------
-
-### Forbid passing children as prop
-Children should always be actual children, not passed in as a prop.
-
-**error**
-```js
-<div children='Children' />
-
-<MyComponent children={<AnotherComponent />} />
-<MyComponent children={['Child 1', 'Child 2']} />
-
-React.createElement("div", { children: 'Children' })
-```
-
-**good**
-```js
-<div>Children</div>
-
-<MyComponent>Children</MyComponent>
-
-<MyComponent>
-  <span>Child 1</span>
-  <span>Child 2</span>
-</MyComponent>
-
-React.createElement("div", {}, 'Children')
-React.createElement("div", 'Child 1', 'Child 2')
-```
-
-### Prevent problem with children and props.dangerouslySetInnerHTML
-This rule helps prevent problems caused by using children and the dangerouslySetInnerHTML prop at the same time. React will throw a warning if this rule is ignored.
-
-**error**
-```js
-const React = require("react");
-
-const x = <div dangerouslySetInnerHTML={{ __html: "HTML" }}>
-  Children
-</div>;
-const y = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }}>
-  Children
-</Hello>;
-
-
-React.createElement("div", { dangerouslySetInnerHTML: { __html: "HTML" } }, "Children");
-React.createElement("Hello", { dangerouslySetInnerHTML: { __html: "HTML" } }, "Children");
-```
-
-**good**
-```js
-const React = require("react");
-
-const a = <div dangerouslySetInnerHTML={{ __html: "HTML" }} />;
-const b = <Hello dangerouslySetInnerHTML={{ __html: "HTML" }} />;
-const c = <div>
-  Children
-</div>;
-const d = <Hello>
-  Children
-</Hello>;
-
-
-React.createElement("div", { dangerouslySetInnerHTML: { __html: "HTML" } });
-React.createElement("Hello", { dangerouslySetInnerHTML: { __html: "HTML" } });
-React.createElement("div", {}, "Children");
-React.createElement("Hello", {}, "Children");
-```
-
------
-
-### Prevent usage of findDOMNode
-Facebook will eventually deprecate findDOMNode as it blocks certain improvements in React in the future.
-
-It is recommended to use callback refs instead.
-
-**warn**
-```js
-class MyComponent extends Component {
-  componentDidMount() {
-    findDOMNode(this).scrollIntoView();
-  }
-  render() {
-    return <div />
-  }
-}
-```
-
-**good**
-```js
-class MyComponent extends Component {
-  componentDidMount() {
-    this.node.scrollIntoView();
-  }
-  render() {
-    return <div ref={node => this.node = node} />
-  }
-}
-```
-
------
-
-### Prevent usage of setState in componentDidUpdate
-
-Updating the state after a component update will trigger a second render() call and can lead to property/layout thrashing.
-
-**warn**
-```js
-class Hello extends React.Component {
-  componentDidUpdate() {
-    this.setState({
-      name: this.props.name.toUpperCase()
+    ```jsx
+    // bad
+    const Listing = React.createClass({
+      // ...
+      render() {
+        return <div>{this.state.hello}</div>;
+      }
     });
-  }
 
-  render() {
-    return <div>Hello {this.state.name}</div>;
-  }
-}
-```
+    // good
+    class Listing extends React.Component {
+      // ...
+      render() {
+        return <div>{this.state.hello}</div>;
+      }
+    }
+    ```
 
------
+    And if you don't have state or refs, prefer normal functions (not arrow functions) over classes:
 
-### Forbid direct mutation of this.state
+    ```jsx
+    // bad
+    class Listing extends React.Component {
+      render() {
+        return <div>{this.props.hello}</div>;
+      }
+    }
 
-NEVER mutate this.state directly, as calling setState() afterwards may replace the mutation you made. Treat this.state as if it were immutable.
+    // bad (relying on function name inference is discouraged)
+    const Listing = ({ hello }) => (
+      <div>{hello}</div>
+    );
 
-**error**
-```js
-class Hello extends React.Component {
-  componentDidMount() {
-    this.state.name = this.props.name.toUpperCase();
-  }
+    // good
+    function Listing({ hello }) {
+      return <div>{hello}</div>;
+    }
+    ```
 
-  render() {
-    return <div>Hello {this.state.name}</div>;
-  }
-}
+## Naming
 
-```
+  - **Filename**: Use PascalCase for filenames. E.g., `ReservationCard.js`.
+  - **Reference Naming**: Use PascalCase for React components and camelCase for their instances. eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
 
-**good**
-```js
-class Hello extends React.Component {
-  componentDidMount() {
-    this.setState({
-      name: this.props.name.toUpperCase()
+    ```jsx
+    // bad
+    import reservationCard from './ReservationCard';
+
+    // good
+    import ReservationCard from './ReservationCard';
+
+    // bad
+    const ReservationItem = <ReservationCard />;
+
+    // good
+    const reservationItem = <ReservationCard />;
+    ```
+
+  - **Component Naming**: Use the filename as the component name. For example, `ReservationCard.js` should have a reference name of `ReservationCard`.
+
+    ```jsx
+    // bad - Component defined in index.js
+    import Footer from './Footer';
+    import Footer from './Footer/index';
+
+    // good
+    import Footer from './footer/Footer';
+
+    // good - without folder
+    import Footer from './Footer';
+    ```
+  - **Higher-order Component Naming**: Use a composite of the higher-order component's name and the passed-in component's name as the `displayName` on the generated component. For example, the higher-order component `withFoo()`, when passed a component `Bar` should produce a component with a `displayName` of `withFoo(Bar)`.
+
+  > Why? A component's `displayName` may be used by developer tools or in error messages, and having a value that clearly expresses this relationship helps people understand what is happening.
+
+    ```jsx
+    // bad
+    export default function withFoo(WrappedComponent) {
+      return function WithFoo(props) {
+        return <WrappedComponent {...props} foo />;
+      }
+    }
+
+    // good
+    export default function withFoo(WrappedComponent) {
+      function WithFoo(props) {
+        return <WrappedComponent {...props} foo />;
+      }
+
+      const wrappedComponentName = WrappedComponent.displayName
+        || WrappedComponent.name
+        || 'Component';
+
+      WithFoo.displayName = `withFoo(${wrappedComponentName})`;
+      return WithFoo;
+    }
+    ```
+
+  - **Props Naming**: Avoid using DOM component prop names for different purposes.
+
+  > Why? People expect props like `style` and `className` to mean one specific thing. Varying this API for a subset of your app makes the code less readable and less maintainable, and may cause bugs.
+
+    ```jsx
+    // bad
+    <MyComponent style="fancy" />
+
+    // good
+    <MyComponent variant="fancy" />
+    ```
+
+## Declaration
+
+  - Do not use `displayName` for naming components. Instead, name the component by reference.
+
+    ```jsx
+    // bad
+    export default React.createClass({
+      displayName: "ReservationCard",
+      // stuff goes here
     });
+    // bad
+    function ReservationCard() {
+    }
+    ReservationCard.displayName = "ReservationCard";
+
+    // good
+    export default class ReservationCard extends React.Component {
+    }
+
+    // good
+    function ReservationCard() {
+    }
+    ```
+
+## Alignment
+
+  - Follow these alignment styles for JSX syntax. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
+
+    ```jsx
+    // bad
+    <Foo superLongParam="bar"
+         anotherSuperLongParam="baz" />
+
+    // good
+    <Foo
+      superLongParam="bar"
+      anotherSuperLongParam="baz"
+    />
+
+    // if props fit in one line then keep it on the same line
+    <Foo bar="bar" />
+
+    // children get indented normally
+    <Foo
+      superLongParam="bar"
+      anotherSuperLongParam="baz"
+    >
+      <Quux />
+    </Foo>
+    ```
+
+## Quotes
+
+  - Always use double quotes (`"`) for JSX attributes. eslint: [`jsx-quotes`](http://eslint.org/docs/rules/jsx-quotes)
+
+  > Why? Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+
+    ```jsx
+    // bad
+    <Foo bar='bar' />
+
+    // good
+    <Foo bar="bar" />
+
+    // bad
+    <Foo style={{ left: '20px' }} />
+
+    // good
+    <Foo style={{ left: "20px" }} />
+    ```
+
+## Spacing
+
+  - Always include a single space in your self-closing tag. eslint: [`no-multi-spaces`](http://eslint.org/docs/rules/no-multi-spaces), [`react/jsx-space-before-closing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-space-before-closing.md)
+
+    ```jsx
+    // bad
+    <Foo/>
+
+    // very bad
+    <Foo                 />
+
+    // bad
+    <Foo
+     />
+
+    // good
+    <Foo />
+    ```
+
+  - Do not pad JSX curly braces with spaces. eslint: [`react/jsx-curly-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-curly-spacing.md)
+
+    ```jsx
+    // bad
+    <Foo bar={ baz } />
+
+    // good
+    <Foo bar={baz} />
+    ```
+
+## Props
+
+  - Always use camelCase for prop names.
+
+    ```jsx
+    // bad
+    <Foo
+      UserName="hello"
+      phone_number={12345678}
+    />
+
+    // good
+    <Foo
+      userName="hello"
+      phoneNumber={12345678}
+    />
+    ```
+
+  - Omit the value of the prop when it is explicitly `true`. eslint: [`react/jsx-boolean-value`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
+
+    ```jsx
+    // bad
+    <Foo
+      hidden={true}
+    />
+
+    // good
+    <Foo
+      hidden
+    />
+    ```
+
+  - Always include an `alt` prop on `<img>` tags. If the image is presentational, `alt` can be an empty string or the `<img>` must have `role="presentation"`. eslint: [`jsx-a11y/img-has-alt`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/img-has-alt.md)
+
+    ```jsx
+    // bad
+    <img src="hello.jpg" />
+
+    // good
+    <img src="hello.jpg" alt="Me waving hello" />
+
+    // good
+    <img src="hello.jpg" alt="" />
+
+    // good
+    <img src="hello.jpg" role="presentation" />
+    ```
+
+  - Do not use words like "image", "photo", or "picture" in `<img>` `alt` props. eslint: [`jsx-a11y/img-redundant-alt`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/img-redundant-alt.md)
+
+  > Why? Screenreaders already announce `img` elements as images, so there is no need to include this information in the alt text.
+
+    ```jsx
+    // bad
+    <img src="hello.jpg" alt="Picture of me waving hello" />
+
+    // good
+    <img src="hello.jpg" alt="Me waving hello" />
+    ```
+
+  - Use only valid, non-abstract [ARIA roles](https://www.w3.org/TR/wai-aria/roles#role_definitions). eslint: [`jsx-a11y/aria-role`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/aria-role.md)
+
+    ```jsx
+    // bad - not an ARIA role
+    <div role="datepicker" />
+
+    // bad - abstract ARIA role
+    <div role="range" />
+
+    // good
+    <div role="button" />
+    ```
+
+  - Do not use `accessKey` on elements. eslint: [`jsx-a11y/no-access-key`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-access-key.md)
+
+  > Why? Inconsistencies between keyboard shortcuts and keyboard commands used by people using screenreaders and keyboards complicate accessibility.
+
+  ```jsx
+  // bad
+  <div accessKey="h" />
+
+  // good
+  <div />
+  ```
+
+  - Avoid using an array index as `key` prop, prefer a unique ID. ([why?](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318))
+
+  ```jsx
+  // bad
+  {todos.map((todo, index) =>
+    <Todo
+      {...todo}
+      key={index}
+    />
+  )}
+
+  // good
+  {todos.map(todo => (
+    <Todo
+      {...todo}
+      key={todo.id}
+    />
+  ))}
+  ```
+
+  - Always define explicit defaultProps for all non-required props.
+
+  > Why? propTypes are a form of documentation, and providing defaultProps means the reader of your code doesn’t have to assume as much. In addition, it can mean that your code can omit certain type checks.
+
+  ```jsx
+  // bad
+  function SFC({ foo, bar, children }) {
+    return <div>{foo}{bar}{children}</div>;
   }
-
-  render() {
-    return <div>Hello {this.state.name}</div>;
-  }
-}
-
-```
-
------
-
-### Forbid usage of the return value of React.render
-
-> `ReactDOM.render()` currently returns a reference to the root `ReactComponent` instance. However, using this return value is legacy and should be avoided because future versions of React may render components asynchronously in some cases. If you need a reference to the root `ReactComponent` instance, the preferred solution is to attach a [callback ref](http://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute) to the root element.
-
-Source: [React Top-Level API documentation](http://facebook.github.io/react/docs/top-level-api.html#reactdom.render)
-
-**error**
-```js
-const inst = ReactDOM.render(<App />, document.body);
-doSomethingWithInst(inst);
-```
-
-**good**
-```js
-ReactDOM.render(<App ref={doSomethingWithInst} />, document.body);
-
-ReactDOM.render(<App />, document.body, doSomethingWithInst);
-```
-
------
-
-### Forbid multiple ES6 component definition per file
-
-Declaring only one component per file improves readability and reusability of components. It's allowed to have multiple stateless components, or one statefull component and some stateless components in the same file.
-
-**error**
-```js
-class Hello extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-
-class HelloJohn extends React.Component {
-  render() {
-    return <Hello name="John" />;
-  }
-}
-```
-
-**good**
-```js
-import Hello from "./Hello";
-
-class HelloJohn extends React.Component {
-  render() {
-    return <Hello name="John" />;
-  }
-}
-```
-
------
-
-### Prevent using string references
-
-Currently, two ways are supported by React to refer to components. The first one, providing a string identifier is considered legacy in the official documentation.
-Referring to components by setting a property on the this object in the reference callback is preferred.
-
-**error**
-```js
-class Hello extends React.Component {
-  componentDidMount() {
-    const component = this.refs.hello;
-    // ...do something with component
-  }
-
-  render() {
-    return <div ref="hello">Hello World!</div>;
-  }
-}
-
-```
-
-**good**
-```js
-class Hello extends React.Component {
-  componentDidMount() {
-    const component = this.hello;
-    // ...do something with component
-  }
-
-  render() {
-    return <div ref={(c) => { this.hello = c; }}>Hello World!</div>;
-  }
-}
-```
-
------
-
-### Prevent invalid characters from appearing in markup
-
-This prevents characters that you may have meant as JSX escape characters from being accidentally injected as a text node in JSX statements
-
-The preferred way to include one of these characters is to use the HTML escape code.
-
-- `>` can be replaced with `&gt;`
-- `"` can be replaced with `&quot;`, `&ldquo;` or `&rdquo;`
-- `'` can be replaced with `&apos;`, `&lsquo;` or `&rsquo;`
-- `}` can be replaced with `&#125;`
-
-**warn**
-```js
-<div> > </div>
-
-<input
-  className="name"
-  name="string"
-  value="string">  {/* oops! */}
-  x="y">
-  Body Text
-</input>
-
-<div>{'Text'}}</div>
-```
-
-**good**
-```js
-<div> &gt; </div>
-```
-
------
-
-### Prevent usage of unknown DOM property (fixable)
-
-In JSX all DOM properties and attributes should be camelCased to be consistent with standard JavaScript style. This can be a possible source of error if you are used to writing plain HTML.
-
-**warn**
-```js
-var hello = <div class="hello">Hello World</div>;
-```
-
-**good**
-```js
-var hello = <div className="hello">Hello World</div>;
-```
-
------
-
-### Use ES6 class instead of ES5 for React Components
-
-Stateful components should be build with the new ES6 syntax.
-
-**error**
-```js
-var Hello = React.createClass({
-  render: function() {
-    return <div>Hello {this.props.name}</div>;
-  }
-});
-```
-
-**good**
-```js
-class Hello extends React.Component {
-
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-```
-
------
-
-### Enforce stateless React Components to be written as a pure function
-
-Stateless functional components are simpler than class based components and will benefit from future React performance optimizations specific to these components.
-It's also valid to write Components that extends from `React.PureComponent` when they use this.props or this.context.
-
-**warn**
-```js
-class Hello extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-
-class Foo extends React.PureComponent {
-  render() {
-    return <div>Bar</div>;
-  }
-}
-```
-
-**good**
-```js
-function Hello(props) {
-  return <div>Hello {props.name}</div>;
-};
-
-class Hello extends React.PureComponent {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-```
-
------
-
-### Prevent missing props validation in a React component definition
-
-PropTypes improve the reusability of your component by validating the received data.
-
-It can warn other developers if they make a mistake while reusing the component with improper data type.
-
-**warn**
-```js
-class Hello extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
-```
-
-**good**
-```js
-class Hello extends React.Component {
-
-  static propTypes = {
-    name: React.PropTypes.string.isRequired,
+  SFC.propTypes = {
+    foo: PropTypes.number.isRequired,
+    bar: PropTypes.string,
+    children: PropTypes.node,
   };
 
-  render() {
-    return <div>Hello {this.props.name}</div>;
+  // good
+  function SFC({ foo, bar }) {
+    return <div>{foo}{bar}</div>;
   }
-}
-```
-
------
-
-### Prevent missing React when using JSX
-
-When using JSX, <a /> expands to React.createElement("a"). Therefore the React variable must be in scope.
+  SFC.propTypes = {
+    foo: PropTypes.number.isRequired,
+    bar: PropTypes.string,
+  };
+  SFC.defaultProps = {
+    bar: '',
+    children: null,
+  };
+  ```
+
+## Refs
+
+  - Always use ref callbacks. eslint: [`react/no-string-refs`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
+
+    ```jsx
+    // bad
+    <Foo
+      ref="myRef"
+    />
+
+    // good
+    <Foo
+      ref={ref => { this.myRef = ref; }}
+    />
+    ```
+
+## Parentheses
+
+  - Wrap JSX tags in parentheses when they span more than one line. eslint: [`react/wrap-multilines`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md)
+
+    ```jsx
+    // bad
+    render() {
+      return <MyComponent className="long body" foo="bar">
+               <MyChild />
+             </MyComponent>;
+    }
+
+    // good
+    render() {
+      return (
+        <MyComponent className="long body" foo="bar">
+          <MyChild />
+        </MyComponent>
+      );
+    }
+
+    // good, when single line
+    render() {
+      const body = <div>hello</div>;
+      return <MyComponent>{body}</MyComponent>;
+    }
+    ```
+
+## Tags
+
+  - Always self-close tags that have no children. eslint: [`react/self-closing-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/self-closing-comp.md)
+
+    ```jsx
+    // bad
+    <Foo className="stuff"></Foo>
+
+    // good
+    <Foo className="stuff" />
+    ```
+
+  - If your component has multi-line properties, close its tag on a new line. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
+
+    ```jsx
+    // bad
+    <Foo
+      bar="bar"
+      baz="baz" />
+
+    // good
+    <Foo
+      bar="bar"
+      baz="baz"
+    />
+    ```
+
+## Methods
+
+  - Use arrow functions to close over local variables.
+
+    ```jsx
+    function ItemList(props) {
+      return (
+        <ul>
+          {props.items.map((item, index) => (
+            <Item
+              key={item.key}
+              onClick={() => doSomethingWith(item.name, index)}
+            />
+          ))}
+        </ul>
+      );
+    }
+    ```
+
+  - Bind event handlers for the render method in the constructor. eslint: [`react/jsx-no-bind`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
+
+  > Why? A bind call in the render path creates a brand new function on every single render.
+
+    ```jsx
+    // bad
+    class extends React.Component {
+      onClickDiv() {
+        // do stuff
+      }
+
+      render() {
+        return <div onClick={this.onClickDiv.bind(this)} />
+      }
+    }
+
+    // good
+    class extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.onClickDiv = this.onClickDiv.bind(this);
+      }
+
+      onClickDiv() {
+        // do stuff
+      }
+
+      render() {
+        return <div onClick={this.onClickDiv} />
+      }
+    }
+    ```
+
+  - Do not use underscore prefix for internal methods of a React component.
+  > Why? Underscore prefixes are sometimes used as a convention in other languages to denote privacy. But, unlike those languages, there is no native support for privacy in JavaScript, everything is public. Regardless of your intentions, adding underscore prefixes to your properties does not actually make them private, and any property (underscore-prefixed or not) should be treated as being public. See issues [#1024](https://github.com/airbnb/javascript/issues/1024), and [#490](https://github.com/airbnb/javascript/issues/490) for a more in-depth discussion.
+
+    ```jsx
+    // bad
+    React.createClass({
+      _onClickSubmit() {
+        // do stuff
+      },
+
+      // other stuff
+    });
+
+    // good
+    class extends React.Component {
+      onClickSubmit() {
+        // do stuff
+      }
+
+      // other stuff
+    }
+    ```
+
+  - Be sure to return a value in your `render` methods. eslint: [`react/require-render-return`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/require-render-return.md)
+
+    ```jsx
+    // bad
+    render() {
+      (<div />);
+    }
 
-**error**
-```js
-const hello = <div>Hello {this.props.name}</div>;
-```
+    // good
+    render() {
+      return (<div />);
+    }
+    ```
 
-**good**
-```js
-import React from "react";
+## Ordering
 
-const hello = <div>Hello {this.props.name}</div>;
-```
+  - Ordering for `class extends React.Component`:
 
------
+  1. optional `static` methods
+  1. `constructor`
+  1. `getChildContext`
+  1. `componentWillMount`
+  1. `componentDidMount`
+  1. `componentWillReceiveProps`
+  1. `shouldComponentUpdate`
+  1. `componentWillUpdate`
+  1. `componentDidUpdate`
+  1. `componentWillUnmount`
+  1. *clickHandlers or eventHandlers* like `onClickSubmit()` or `onChangeDescription()`
+  1. *getter methods for `render`* like `getSelectReason()` or `getFooterContent()`
+  1. *optional render methods* like `renderNavigation()` or `renderProfilePicture()`
+  1. `render`
 
-### Enforce ES6 class for returning value in render
+  - How to define `propTypes`, `defaultProps`, `contextTypes`, etc...
 
-When writing the render method in a component it is easy to forget to return the JSX content.
+  **without class properties**
 
-**error**
-```js
-class Hello extends React.Component {
-  render() {
-    <div>Hello</div>;
-  }
-}
-```
+    ```jsx
+    import React, { Component, PropTypes } from 'react';
 
-**good**
-```js
-class Hello extends React.Component {
-  render() {
-    return <div>Hello</div>;
-  }
-}
-```
+    const propTypes = {
+      id: PropTypes.number.isRequired,
+      url: PropTypes.string.isRequired,
+      text: PropTypes.string,
+    };
 
------
+    const defaultProps = {
+      text: 'Hello World',
+    };
 
-### Prevent extra closing tags for components without children
+    class Link extends Component {
+      static methodsAreOk() {
+        return true;
+      }
 
-Components without children can be self-closed to avoid unnecessary extra closing tag.
+      render() {
+        return <a href={this.props.url} data-id={this.props.id}>{this.props.text}</a>
+      }
+    }
 
-**warn**
-```js
-const helloJohn = <Hello name="John"></Hello>;
-const contentContainer = <div className="content"></div>;
-```
+    Link.propTypes = propTypes;
+    Link.defaultProps = defaultProps;
 
-**good**
-```js
-const helloJohn = <Hello name="John" />;
-const contentContainer = <div className="content">Hello</div>;
-const profile = <Hello name="John"><img src="picture.png" /></Hello>;
-```
+    export default Link;
+    ```
 
------
+   **with class properties**
 
-### Enforce component methods order
+    ```jsx
+    import React, { Component, PropTypes } from 'react';
 
-When creating React components it is more convenient to always follow the same organisation for methods order to helps you to easily find lifecyle methods, event handlers, etc.
+    export default class Link extends Component {
 
-The following organisation must be followed:
+      static propTypes = {
+         id: PropTypes.number.isRequired,
+         url: PropTypes.string.isRequired,
+         text: PropTypes.string,
+       };
 
-  1. optional type annotations (flowtype)
-  2. static methods and properties
-  3. lifecycle methods: `displayName`, `propTypes`, `contextTypes`, `childContextTypes`, `mixins`, `statics`,`defaultProps`, `constructor`, `getDefaultProps`, `getInitialState`, `state`, `getChildContext`, `componentWillMount`, `componentDidMount`, `componentWillReceiveProps`, `shouldComponentUpdate`, `componentWillUpdate`, `componentDidUpdate`, `componentWillUnmount` (in this order).
-  4. custom methods
-  5. `render` method
+      static defaultProps = {
+        text: 'Hello World',
+      };
 
-**warn**
-```js
-class Hello extends React.Component {
-  render() {
-    return <div>Hello</div>;
-  }
-  componentDidMount() {
-    // do something
-  }
-}
-```
+      static methodsAreOk() {
+        return true;
+      }
 
-**good**
-```js
-class Hello extends React.Component {
-  componentDidMount() {
-    // do something
-  }
-  render() {
-    return <div>Hello</div>;
-  }
-}
-```
+      render() {
+        return <a href={this.props.url} data-id={this.props.id}>{this.props.text}</a>
+      }
+    }
+    ```
 
------
 
+## `isMounted`
 
-### Enforce style prop value being an object
+  - Do not use `isMounted`. eslint: [`react/no-is-mounted`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-is-mounted.md)
 
-Require that the value of the prop style be an object or a variable that is an object.
+  > Why? [`isMounted` is an anti-pattern][anti-pattern], is not available when using ES6 classes, and is on its way to being officially deprecated.
 
-**warn**
-```js
-<div style="color: 'red'" />
+  [anti-pattern]: https://facebook.github.io/react/blog/2015/12/16/ismounted-antipattern.html
 
-<div style={true} />
-
-<Hello style={true} />
-
-const styles = true;
-<div style={styles} />
-```
-
-**good**
-```js
-<div style={{ color: "red" }} />
-
-<Hello style={{ color: "red" }} />
-
-const styles = { color: "red" };
-<div style={styles} />
-```
-
------
-
-### Enforce boolean attributes notation in JSX (Fixable)
-
-When using boolean attributes you should always omit the value when the value is `true`.
-
-**warn**
-```js
-var Hello = <Hello personal={true} />;
-```
-
-**good**
-```js
-var Hello = <Hello personal />;
-```
-
------
-
-### Closing bracket location in JSX
-
-Enforce the closing bracket location for JSX multiline elements.
-
-**warn**
-```js
-<Hello
-  firstName="John"
-  lastName="Smith"
-  />;
-
-<Say
-  firstName="John"
-  lastName="Smith"
->
-  Hello
-</Say>;
-```
-
-**good**
-```js
-<Hello
-  firstName="John"
-  lastName="Smith" />;
-
-<Say
-  firstName="John"
-  lastName="Smith">
-  Hello
-</Say>;
-```
-
------
-
-### No spaces inside of curly braces in JSX attributes
-
-**warn**
-```js
-<Hello name={ firstname } />;
-<Hello name={ firstname} />;
-<Hello name={firstname } />;
-
-<Hello name={ { firstname: 'John', lastname: 'Doe' } } />;
-```
-
-**good**
-```js
-<Hello name={firstname} />;
-<Hello name={{ firstname: 'John', lastname: 'Doe' }} />;
-```
-
------
-
-### Position of the first property (Fixable)
-
-Ensures the correct position of the first property.
-
-**warn**
-```js
-<Hello
-    personal />
-
-<Hello personal={true}
-    foo="bar"
-/>
-
-<Hello foo={{
-}} />
-```
-
-**good**
-```js
-<Hello personal />
-
-<Hello
-  personal={true}
-  foo="bar"
-/>
-
-<Hello foo={{}} />
-```
-
------
-
-### Spaces around equal signs in JSX attributes (Fixable)
-
-
-**warn**
-```js
-<Hello name = {firstname} />;
-<Hello name ={firstname} />;
-<Hello name= {firstname} />;
-```
-
-**good**
-```js
-<Hello name={firstname} />;
-<Hello name />;
-<Hello {...props} />;
-```
-
------
-
-### Event handler naming conventions in JSX
-
-Props which are used for event handlers should be prefixed with "on".
-Component methods which are passed to event handlers should be prefixed with "handle".
-
-
-**warn**
-```js
-<MyComponent handleChange={this.handleChange} />
-<MyComponent onChange={this.componentChanged} />
-```
-
-**good**
-```js
-<MyComponent onChange={this.handleChange} />
-<MyComponent onChange={this.props.onFoo} />
-```
-
------
-
-### JSX indentation (fixable)
-
-JSX should be indented with 2 spaces.
-
-
-**warn**
-```js
-<App>
-<Hello />
-</App>
-
-<App
-test="test"
-test2="test" />
-
-```
-
-**good**
-```js
-<App>
-  <Hello />
-</App>
-
-<App
-  test="test"
-  test2="test" />
-
-```
-
------
-
-### No .bind() or Arrow Functions in JSX Props
-
-A `bind` call or [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) in a JSX prop will create a brand new function on every single render. This is bad for performance, as it will result in the garbage collector being invoked way more than is necessary.
-
-**warn**
-```js
-<div onClick={this._handleClick.bind(this)}></div>
-<div onClick={() => console.log('Hello!'))}></div>
-
-```
-
-**good**
-```js
-
-<div onClick={this._handleClick}></div>
-<div ref={(e) => this.element = e}></div>
-
-```
-
------
-
-### Prevent comments from being inserted as text nodes
-
-This rule prevents comment strings (e.g. beginning with // or /*) from being accidentally injected as a text node in JSX statements.
-
-**error**
-```js
-function Comment1() {
-  return (
-    <div>// empty div</div>
-  );
-}
-
-function Comment2() {
-  return (
-    <div>
-      /* empty div */
-    </div>
-  );
-}
-```
-
-**good**
-```js
-function Comment1() {
-  return (
-    <div>{/* empty div */}</div>
-  );
-}
-
-function Comment2() {
-  return (
-    <div /* empty div */></div>
-  );
-}
-
-function Comment3() {
-  return (
-    <div className={'foo' /* temp class */} />
-  );
-}
-
-function Comment4() {
-  return (
-    <div>{'/* This will be output as a text node */'}</div>
-  );
-}
-
-```
-
------
-
-### Prevent duplicate properties in JSX
-
-Creating JSX elements with duplicate props can cause unexpected behavior in your application.
-
-**error**
-```js
-<Hello name="John" name="John" />;
-```
-
-**good**
-```js
-<Hello firstname="John" lastname="Doe" />;
-```
-
------
-
-
-### Parentheses around multiline JSX (Fixable)
-
-Wrapping multiline JSX in parentheses improves readability.
-
-
-**warn**
-```js
-
-const test = <div>
-  Test
- </div>;
-
-let test2;
-
-test2 = <div>
-  Test
- </div>;
-
-
-function Test() {
-  return (
-    <div>
-      Test
-    </div>
-  );
-}
-
-```
-
-**good**
-```js
-const test =(
-  <div>
-    Test
-  </div>
-);
-
-let test2;
-test2 =(
-  <div>
-    Test
-  </div>
-);
-
-function Test() {
-  return (
-    <div>
-      Test
-    </div>
-  );
-}
-```
-
------
-
-
-
+**[⬆ back to top](#table-of-contents)**
