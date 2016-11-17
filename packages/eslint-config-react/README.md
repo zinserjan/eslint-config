@@ -33,6 +33,7 @@ npm install --save-dev @zinserjan/eslint-config-react
   1. [Parentheses](#parentheses)
   1. [Tags](#tags)
   1. [Methods](#methods)
+  1. [Control structures](#control-structures)
   1. [Ordering](#ordering)
   1. [`isMounted`](#ismounted)
 
@@ -336,51 +337,52 @@ npm install --save-dev @zinserjan/eslint-config-react
 
   > Why? Inconsistencies between keyboard shortcuts and keyboard commands used by people using screenreaders and keyboards complicate accessibility.
 
-  ```jsx
-  // bad
-  <div accessKey="h" />
+    ```jsx
+    // bad
+    <div accessKey="h" />
 
-  // good
-  <div />
-  ```
+    // good
+    <div />
+    ```
 
   - Avoid using an array index as `key` prop, prefer a unique ID. ([why?](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318))
 
-  ```jsx
-  // bad
-  {todos.map((todo, index) =>
-    <Todo
-      {...todo}
-      key={index}
-    />
-  )}
+    ```jsx
+    // bad
+    {todos.map((todo, index) =>
+      <Todo
+        {...todo}
+        key={index}
+      />
+    )}
 
-  // good
-  {todos.map(todo => (
-    <Todo
-      {...todo}
-      key={todo.id}
-    />
-  ))}
-  ```
+    // good
+    {todos.map(todo => (
+      <Todo
+        {...todo}
+        key={todo.id}
+      />
+    ))}
+    ```
 
   - Do not pass CSS classes & styles between custom components. This rule only applies to Components (e.g. `<Foo />`) and not DOM nodes (e.g. `<div />`). eslint: [`react/forbid-component-props`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-component-props.md)
 
   > Why? These [add lots of complexity to Components](https://medium.com/brigade-engineering/don-t-pass-css-classes-between-components-e9f7ab192785).
 
-  ```jsx
-  // bad
-  <Hello className='foo' />
-  <Hello style={{color: 'red'}} />
+    ```jsx
+    // bad
+    <Hello className='foo' />
+    <Hello style={{color: 'red'}} />
 
-  // good
-  <Hello name='Joe' />
-  <div className='foo' />
-  <div style={{color: 'red'}} />
-  ```
+    // good
+    <Hello name='Joe' />
+    <div className='foo' />
+    <div style={{color: 'red'}} />
+    ```
 
   - Always define propTypes accurately for all props and avoid PropTypes.any, PropTypes.array, PropTypes.object. eslint: [`react/forbid-prop-types`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-prop-types.md)
-  ```jsx
+
+    ```jsx
     // bad
     class Component extends React.Component {
       ...
@@ -630,6 +632,64 @@ npm install --save-dev @zinserjan/eslint-config-react
       return (<div />);
     }
     ```
+
+
+## Control structures
+
+React doesn't provide helpers for control structures out of the box and just allows the usage of native javascript helpers like ternary operator or Array.map. There is no `if/else` or `each` statement like in Handlebars.
+To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGilleran/jsx-control-statements) which gives us some missing helpers :)
+
+  - Conditional rendering
+
+    ```jsx
+    <div>
+      <If condition={true}>
+        <span>IfBlock</span>
+      </If>
+    </div>
+    ```
+
+  - Conditional rendering with alternatives
+
+    ```jsx
+    <div>
+      <Choose>
+        <When condition={ test1 }>
+          <span>IfBlock</span>
+        </When>
+        <When condition={ test2 }>
+          <span>ElseIfBlock</span>
+          <span>Another ElseIfBlock</span>
+          <span>...</span>
+        </When>
+        <Otherwise>
+          <span>ElseBlock</span>
+        </Otherwise>
+      </Choose>
+    </div>
+    ```
+
+  - Loops via native [].map
+
+    ```jsx
+    // single element
+    <div>
+      {[1,2,3].map(function (n) {
+        return <p>{n}</p>
+      }}
+    </div>
+
+    // multiple elements
+    <div>
+      {[1,2,3].map(function (n) {
+        return ([
+          <h3></h3>, // note the comma
+          <p></p>
+        ]);
+      })}
+    </div>
+    ```
+
 
 ## Ordering
 
