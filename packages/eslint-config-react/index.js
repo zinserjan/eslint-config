@@ -1,13 +1,22 @@
 module.exports = {
   plugins: [
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "jsx-control-statements"
   ],
   parserOptions: {
     ecmaVersion: 2015,
     ecmaFeatures: {
       jsx: true
     }
+  },
+  "globals": {
+    // Note: false disallows overwriting these settings
+    If: false,
+    For: false,
+    When: false,
+    Choose: false,
+    Otherwise: false
   },
   rules: {
     // eslint jsx rules
@@ -94,5 +103,10 @@ module.exports = {
     "jsx-a11y/label-has-for": ["warn"],
     "jsx-a11y/tabindex-no-positive": ["warn"],
     "jsx-a11y/no-access-key": ["error"],
+    // eslint jsx control statements
+    "jsx-control-statements/jsx-choose-not-empty": ["warn"],
+    "jsx-control-statements/jsx-when-require-condition": ["warn"],
+    "jsx-control-statements/jsx-otherwise-once-last": ["error"],
+    "jsx-control-statements/jsx-if-require-condition": ["warn"],
   }
 };

@@ -637,9 +637,9 @@ npm install --save-dev @zinserjan/eslint-config-react
 ## Control structures
 
 React doesn't provide helpers for control structures out of the box and just allows the usage of native javascript helpers like ternary operator or Array.map. There is no `if/else` or `each` statement like in Handlebars.
-To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGilleran/jsx-control-statements) which gives us some missing helpers :)
+To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGilleran/jsx-control-statements) which gives us some of the missing helpers :)
 
-  - Conditional rendering
+  - Conditional rendering. eslint: [jsx-control-statements/jsx-if-require-condition](https://github.com/vkbansal/eslint-plugin-jsx-control-statements/blob/master/docs/rules/jsx-if-require-condition.md)
 
     ```jsx
     <div>
@@ -649,15 +649,15 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
     </div>
     ```
 
-  - Conditional rendering with alternatives
+  - Conditional rendering with alternatives eslint: [jsx-control-statements/jsx-choose-not-empty](https://github.com/vkbansal/eslint-plugin-jsx-control-statements/blob/master/docs/rules/jsx-choose-not-empty.md), [jsx-control-statements/jsx-when-require-condition](https://github.com/vkbansal/eslint-plugin-jsx-control-statements/blob/master/docs/rules/jsx-when-require-condition.md), [jsx-control-statements/jsx-otherwise-once-last](https://github.com/vkbansal/eslint-plugin-jsx-control-statements/blob/master/docs/rules/jsx-otherwise-once-last.md)
 
     ```jsx
     <div>
       <Choose>
-        <When condition={ test1 }>
+        <When condition={test1}>
           <span>IfBlock</span>
         </When>
-        <When condition={ test2 }>
+        <When condition={test2}>
           <span>ElseIfBlock</span>
           <span>Another ElseIfBlock</span>
           <span>...</span>
@@ -674,14 +674,14 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
     ```jsx
     // single element
     <div>
-      {[1,2,3].map(function (n) {
+      {[1,2,3].map((n) => {
         return <p>{n}</p>
-      }}
+      })}
     </div>
 
     // multiple elements
     <div>
-      {[1,2,3].map(function (n) {
+      {[1,2,3].map((n) => {
         return ([
           <h3></h3>, // note the comma
           <p></p>
