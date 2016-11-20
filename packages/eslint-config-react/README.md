@@ -96,10 +96,10 @@ npm install --save-dev @zinserjan/eslint-config-react
 
     ```jsx
     // bad
-    import reservationCard from './ReservationCard';
+    import reservationCard from "./ReservationCard";
 
     // good
-    import ReservationCard from './ReservationCard';
+    import ReservationCard from "./ReservationCard";
 
     // bad
     const ReservationItem = <ReservationCard />;
@@ -112,14 +112,14 @@ npm install --save-dev @zinserjan/eslint-config-react
 
     ```jsx
     // bad - Component defined in index.js
-    import Footer from './Footer';
-    import Footer from './Footer/index';
+    import Footer from "./Footer";
+    import Footer from "./Footer/index";
 
     // good
-    import Footer from './footer/Footer';
+    import Footer from "./footer/Footer";
 
     // good - without folder
-    import Footer from './Footer';
+    import Footer from "./Footer";
     ```
   - **Higher-order Component Naming**: Use a composite of the higher-order component's name and the passed-in component's name as the `displayName` on the generated component. For example, the higher-order component `withFoo()`, when passed a component `Bar` should produce a component with a `displayName` of `withFoo(Bar)`.
 
@@ -141,7 +141,7 @@ npm install --save-dev @zinserjan/eslint-config-react
 
       const wrappedComponentName = WrappedComponent.displayName
         || WrappedComponent.name
-        || 'Component';
+        || "Component";
 
       WithFoo.displayName = `withFoo(${wrappedComponentName})`;
       return WithFoo;
@@ -371,13 +371,13 @@ npm install --save-dev @zinserjan/eslint-config-react
 
     ```jsx
     // bad
-    <Hello className='foo' />
-    <Hello style={{color: 'red'}} />
+    <Hello className="foo" />
+    <Hello style={{color: "red"}} />
 
     // good
-    <Hello name='Joe' />
-    <div className='foo' />
-    <div style={{color: 'red'}} />
+    <Hello name="Joe" />
+    <div className="foo" />
+    <div style={{color: "red"}} />
     ```
 
   - Always define propTypes accurately for all props and avoid PropTypes.any, PropTypes.array, PropTypes.object. eslint: [`react/forbid-prop-types`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-prop-types.md)
@@ -456,7 +456,7 @@ npm install --save-dev @zinserjan/eslint-config-react
     bar: PropTypes.string,
   };
   SFC.defaultProps = {
-    bar: '',
+    bar: "",
     children: null,
   };
   ```
@@ -716,7 +716,7 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
   **without class properties**
 
     ```jsx
-    import React, { Component, PropTypes } from 'react';
+    import React, { Component, PropTypes } from "react";
 
     const propTypes = {
       id: PropTypes.number.isRequired,
@@ -725,7 +725,7 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
     };
 
     const defaultProps = {
-      text: 'Hello World',
+      text: "Hello World",
     };
 
     class Link extends Component {
@@ -747,7 +747,7 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
    **with class properties**
 
     ```jsx
-    import React, { Component, PropTypes } from 'react';
+    import React, { Component, PropTypes } from "react";
 
     export default class Link extends Component {
 
@@ -758,7 +758,7 @@ To eliminate this lack we use [JSX Control Statements](https://github.com/AlexGi
        };
 
       static defaultProps = {
-        text: 'Hello World',
+        text: "Hello World",
       };
 
       static methodsAreOk() {
