@@ -23,7 +23,8 @@
     "eslint": "^3.9.1"
   },
   "dependencies": {
-    "babel-eslint": "^6.1.2"
+    "babel-eslint": "^6.1.2",
+    "eslint-plugin-import": "~2.2.0"
   },
   "devDependencies": {
     "eslint-test-rules": "*"
