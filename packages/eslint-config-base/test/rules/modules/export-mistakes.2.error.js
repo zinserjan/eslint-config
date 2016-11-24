@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-undef */
+
 export const foo = function () { /*...*/ };
 
 function bar() { /*...*/ }

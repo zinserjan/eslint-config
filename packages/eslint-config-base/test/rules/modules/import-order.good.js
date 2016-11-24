@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-undef */
+
 // 1. node "builtins"
 import fs from "fs";
 import path from "path";

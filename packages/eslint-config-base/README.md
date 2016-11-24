@@ -91,15 +91,336 @@ npm install --save-dev @zinserjan/eslint-config-base
 
 ## Variables
 
-  - Use `const` and `let` for all declarations of variables; avoid using `var`. eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html)
+  - Use `const` and `let` for all declarations of variables; avoid using `var`.
+    eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html)
 
     > Why? `var` is function-scoped and works therefore not as everyone expects that. `const` and `let` are block scoped. See [Hoisting](#hoisting) for more details.
 
   - Use `const` for all variables.
+    eslint: [`prefer-const`](http://eslint.org/docs/rules/prefer-const.html), [`no-const-assign`](http://eslint.org/docs/rules/no-const-assign.html)
 
     > Why? This ensures that you can't reassign your references, which can lead to bugs and difficult to comprehend code.
 
+    ```javascript
+    // bad
+    var a = 1;
+    var b = 2;
+
+    // good
+    const a = 1;
+    const b = 2;
+    ```
+
   - If you must reassign a variable, use `let` instead of `const`.
+    eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html)
+
+
+    ```javascript
+    // bad
+    var count = 1;
+    if (true) {
+      count += 1;
+    }
+
+    // good, use the let.
+    let count = 1;
+    if (true) {
+      count += 1;
+    }
+    ```
+
+  - Declare only a single variable per line.
+    eslint: [`one-var`](http://eslint.org/docs/rules/one-var.html)
+
+    > Why? It's easier to add new variable declarations this way, and you never have to worry about swapping out a `;` for a `,` or introducing punctuation-only diffs. You can also step through each declaration with the debugger, instead of jumping through all of them at once.
+
+    ```javascript
+    // bad
+    const items = [],
+      goSportsTeam = true,
+      dragonball = "z";
+
+    // good
+    const items = [];
+    const goSportsTeam = true;
+    const dragonball = "z";
+    ```
+
+  - Group all your `const`s and then group all your `let`s.
+
+    > Why? This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
+
+    ```javascript
+    // bad
+    let i, len, dragonball,
+        items = getItems(),
+        goSportsTeam = true;
+
+    // bad
+    let i;
+    const items = getItems();
+    let dragonball;
+    const goSportsTeam = true;
+    let len;
+
+    // good
+    const goSportsTeam = true;
+    const items = getItems();
+    let dragonball;
+    let i;
+    let length;
+    ```
+  - Assign variables where you need them, but place them in a reasonable place.
+
+    > Why? `let` and `const` are block scoped and not function scoped.
+
+    ```javascript
+    // bad - unnecessary function call
+    function checkName(hasName) {
+      const name = getName();
+
+      if (hasName === "test") {
+        return false;
+      }
+
+      if (name === "test") {
+        this.setName("");
+        return false;
+      }
+
+      return name;
+    }
+
+    // good
+    function checkName(hasName) {
+      if (hasName === "test") {
+        return false;
+      }
+
+      const name = getName();
+
+      if (name === "test") {
+        this.setName("");
+        return false;
+      }
+
+      return name;
+    }
+    ```
+
+  - Avoid undeclared variables.
+    eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef)
+
+    > Why? This rule can help you locate potential ReferenceErrors resulting from misspellings of variable and parameter names, or accidental implicit globals.
+
+    ```javascript
+    // bad
+    b = 10; // would creat a global variable
+
+    // good
+    const b = 10;
+    ```
+
+  - Code should not contain unused variables.
+    eslint: [`no-unused-vars`](http://eslint.org/docs/rules/no-unused-vars)
+
+    > Why? Variables that are declared and not used anywhere in the code are most likely an error due to incomplete refactoring. Such variables take up space in the code and can lead to confusion by readers.
+
+    ```javascript
+    // bad
+    let x;
+
+    // Write-only variables are not considered as used.
+    let y = 10;
+    y = 5;
+
+    // A read for a modification of itself is not considered as used.
+    let z = 0;
+    z = z + 1;
+
+    // By default, unused arguments cause warnings.
+    (function(foo) {
+        return 5;
+    })();
+
+    // Unused recursive functions also cause warnings.
+    function fact(n) {
+        if (n < 2) return 1;
+        return n * fact(n - 1);
+    }
+
+    // good
+    const x = 10;
+    alert(x);
+
+    // foo is considered used here
+    myFunc(function foo() {
+        // ...
+    }.bind(this));
+
+    (function(foo) {
+        return foo;
+    })();
+
+    let myFunc;
+    myFunc = setTimeout(function() {
+        // myFunc is considered used
+        myFunc();
+    }, 50);
+    ```
+
+  - Never assign native objects or read-only variables.
+    eslint: [`no-global-assign`](http://eslint.org/docs/rules/no-global-assign)
+
+    > Why? JavaScript environments contain a number of built-in global variables, such as `window` in browsers and `process` in Node.js. In almost all cases, you don’t want to assign a value to these global variables as doing so could result in losing access to important functionality.
+
+    ```javascript
+    // bad
+    window = {};
+
+    // ok, but avoid this too
+    window.test = {};
+    ```
+
+  -  Don't chain variable assignments.
+     eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef)
+
+    > Why? Chaining variable assignments creates implicit global variables.
+
+    ```javascript
+    // bad
+    (function example() {
+      // JavaScript interprets this as
+      // let a = ( b = ( c = 1 ) );
+      // The let keyword only applies to variable a; variables b and c become
+      // global variables.
+      let a = b = c = 1;
+    }());
+
+    console.log(a); // undefined
+    console.log(b); // 1
+    console.log(c); // 1
+
+    // good
+    (function example() {
+      let a = 1;
+      let b = a;
+      let c = a;
+    }());
+
+    console.log(a); // undefined
+    console.log(b); // undefined
+    console.log(c); // undefined
+
+    // the same applies for `const`
+    ```
+
+  - Avoid using unary increments and decrements (++, --).
+    eslint [`no-plusplus`](http://eslint.org/docs/rules/no-plusplus)
+
+    > Why? Per the eslint documentation, unary increment and decrement statements are subject to automatic semicolon insertion and can cause silent errors with incrementing or decrementing values within an application. It is also more expressive to mutate your values with statements like `num += 1` instead of `num++` or `num ++`. Disallowing unary increment and decrement statements also prevents you from pre-incrementing/pre-decrementing values unintentionally which can also cause unexpected behavior in your programs.
+
+    ```javascript
+      // bad
+      let array = [1, 2, 3];
+      let num = 1;
+      num++;
+      --num;
+
+      let sum = 0;
+      let truthyCount = 0;
+      for(let i = 0; i < array.length; i++){
+        let value = array[i];
+        sum += value;
+        if (value) {
+          truthyCount++;
+        }
+      }
+
+      // good
+      let array = [1, 2, 3];
+      let num = 1;
+      num += 1;
+      num -= 1;
+
+      const sum = array.reduce((a, b) => a + b, 0);
+      const truthyCount = array.filter(Boolean).length;
+    ```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Strings
+
+  - Use double quotes `""` for strings.
+    eslint: [`quotes`](http://eslint.org/docs/rules/quotes.html)
+
+    > Why? We prefer double quotes over single quotes cause they are easier distinguishable from template strings and makes the code more consistent as we are already using double quotes for attributes in JSX.
+
+    ```javascript
+    // bad
+    const name = 'Capt. Janeway';
+
+    // bad - template literals should contain interpolation or newlines
+    const name = `Capt. Janeway`;
+
+    // good
+    const name = "Capt. Janeway";
+    ```
+
+  - When programmatically building up strings, use template strings instead of concatenation.
+    eslint: [`prefer-template`](http://eslint.org/docs/rules/prefer-template.html) [`template-curly-spacing`](http://eslint.org/docs/rules/template-curly-spacing)
+
+    > Why? Template strings give you a readable, concise syntax with proper newlines and string interpolation features.
+
+    ```javascript
+    // bad
+    function sayHi(name) {
+      return "How are you, " + name + "?";
+    }
+
+    // bad
+    function sayHi(name) {
+      return ["How are you, ", name, "?"].join("");
+    }
+
+    // bad
+    function sayHi(name) {
+      return `How are you, ${ name }?`;
+    }
+
+    // good
+    function sayHi(name) {
+      return `How are you, ${name}?`;
+    }
+    ```
+
+  - Never use `eval()` on a string, it opens too many vulnerabilities.
+    eslint: [`no-eval`](http://eslint.org/docs/rules/no-eval)
+
+    ```javascript
+    const obj = { x: "foo" };
+    const key = "x";
+
+    // bad
+    const value = eval(`obj.${ key }`);
+
+    // good
+    const value = obj[key];
+    ```
+
+  - Do not unnecessarily escape characters in strings.
+    eslint: [`no-useless-escape`](http://eslint.org/docs/rules/no-useless-escape)
+
+    > Why? Backslashes harm readability, thus they should only be present when necessary.
+
+    ```javascript
+    // bad
+    const foo = "\'this\' \i\s \"quoted\"";
+
+    // good
+    const foo = "'this' is \"quoted\"";
+    ```
+
 
 **[⬆ back to top](#table-of-contents)**
 

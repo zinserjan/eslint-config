@@ -6,6 +6,19 @@ module.exports = {
   },
   plugins: ["eslint-plugin-import"],
   rules: {
+    // variables
+    "no-var": ["error"],
+    "one-var": ["error", "never"],
+    "no-undef": ["error"],
+    "no-unused-vars": ["warn"],
+    "no-global-assign": ["error"],
+    "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+    // strings
+    "quotes": ["warn", "double", { "allowTemplateLiterals": false, avoidEscape: true }],
+    "prefer-template": ["warn"],
+    "template-curly-spacing": ["warn", "always"],
+    "no-eval": ["error"],
+    "no-useless-escape": ["warn"],
     // modules
     "import/no-commonjs": ["error"],
     "import/no-amd": ["error"],

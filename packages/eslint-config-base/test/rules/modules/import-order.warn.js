@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, no-undef */
+
 import _ from "lodash";
 import chalk from "chalk";
 
