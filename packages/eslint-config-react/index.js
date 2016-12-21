@@ -20,23 +20,23 @@ module.exports = {
   },
   rules: {
     // eslint jsx rules
-    "jsx-quotes": ["warn"],
+    "jsx-quotes": ["error"],
     "no-multi-spaces": ["warn"],
     // eslint-plugin-react basic rules
     // "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
     "react/require-default-props": ["warn"],
-    "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
+    "react/forbid-prop-types": ["error", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
     "react/no-danger-with-children": ["error"],
     "react/no-is-mounted": ["error"],
     "react/no-find-dom-node": ["warn"],
-    "react/no-did-update-set-state": ["warn", "disallow-in-func"],
+    "react/no-did-update-set-state": ["error", "disallow-in-func"],
     "react/no-direct-mutation-state": ["error"],
     "react/no-render-return-value": ["error"],
     "react/no-multi-comp": ["error", { ignoreStateless: true }],
     "react/no-string-refs": ["error"],
     "react/no-unescaped-entities": ["warn"],
-    "react/no-unknown-property": ["warn"],
+    "react/no-unknown-property": ["error"],
     "react/no-unused-prop-types": ["off"], // disabled cause it does not detect all calls to props
     "react/prefer-es6-class": ["error", "always"],
     "react/prefer-stateless-function": ["warn", { ignorePureComponents: true }],
@@ -56,7 +56,7 @@ module.exports = {
       ]
     }],
     "react/style-prop-object": ["error"],
-    "react/self-closing-comp": ["warn", { component: true, html: true }],
+    "react/self-closing-comp": ["error", { component: true, html: true }],
     // eslint-plugin-react jsx specific rules
     "react/jsx-boolean-value": ["warn", "never"],
     "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
@@ -77,7 +77,7 @@ module.exports = {
     "react/jsx-no-comment-textnodes": ["error"],
     "react/jsx-no-duplicate-props": ["error", { ignoreCase: false }],
     "react/jsx-no-undef": ["error"],
-    "react/jsx-pascal-case": ["warn"],
+    "react/jsx-pascal-case": ["error"],
     "react/jsx-space-before-closing": ["warn"],
     "react/jsx-tag-spacing": ["warn", {
       closingSlash: "never",
@@ -86,28 +86,28 @@ module.exports = {
     }],
     "react/jsx-uses-react": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
     "react/jsx-uses-vars": ["warn"], // This rule has no effect if the no-unused-vars rule is not enabled.
-    "react/jsx-wrap-multilines": ["warn", {
+    "react/jsx-wrap-multilines": ["error", {
       declaration: true,
       assignment: true,
       return: true
     }],
     // eslint react a11y
-    "jsx-a11y/img-has-alt": ["warn"],
-    "jsx-a11y/img-redundant-alt": ["warn"],
-    "jsx-a11y/aria-role": ["warn"],
+    "jsx-a11y/img-has-alt": ["error"],
+    "jsx-a11y/img-redundant-alt": ["error"],
+    "jsx-a11y/aria-role": ["error"],
     "jsx-a11y/aria-props": ["error"],
     "jsx-a11y/aria-proptypes": ["error"],
     "jsx-a11y/role-has-required-aria-props": ["error"],
     "jsx-a11y/role-supports-aria-props": ["error"],
     "jsx-a11y/aria-unsupported-elements": ["error"],
-    "jsx-a11y/href-no-hash": ["warn"],
+    "jsx-a11y/href-no-hash": ["error"],
     "jsx-a11y/label-has-for": ["warn"],
-    "jsx-a11y/tabindex-no-positive": ["warn"],
+    "jsx-a11y/tabindex-no-positive": ["error"],
     "jsx-a11y/no-access-key": ["error"],
     // eslint jsx control statements
-    "jsx-control-statements/jsx-choose-not-empty": ["warn"],
-    "jsx-control-statements/jsx-when-require-condition": ["warn"],
+    "jsx-control-statements/jsx-choose-not-empty": ["error"],
+    "jsx-control-statements/jsx-when-require-condition": ["error"],
     "jsx-control-statements/jsx-otherwise-once-last": ["error"],
-    "jsx-control-statements/jsx-if-require-condition": ["warn"],
+    "jsx-control-statements/jsx-if-require-condition": ["error"],
   }
 };
