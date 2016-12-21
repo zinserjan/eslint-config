@@ -345,7 +345,7 @@ npm install --save-dev @zinserjan/eslint-config-react
     <div />
     ```
 
-  - Avoid using an array index as `key` prop, prefer a unique ID. ([why?](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318))
+  - Avoid using an array index as `key` prop, prefer a unique ID. ([why?](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318))  eslint: [`react/no-array-index-key`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-array-index-key.md)
 
     ```jsx
     // bad
@@ -432,7 +432,7 @@ npm install --save-dev @zinserjan/eslint-config-react
 
     ```
 
-  - Always define explicit defaultProps for all non-required props.
+  - Always define explicit defaultProps for all non-required props. eslint: [`react/require-default-props`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/require-default-props.md)
 
   > Why? propTypes are a form of documentation, and providing defaultProps means the reader of your code doesn’t have to assume as much. In addition, it can mean that your code can omit certain type checks.
 

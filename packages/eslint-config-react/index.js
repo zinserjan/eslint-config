@@ -23,7 +23,8 @@ module.exports = {
     "jsx-quotes": ["warn"],
     "no-multi-spaces": ["warn"],
     // eslint-plugin-react basic rules
-    "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
+    // "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
+    "react/require-default-props": ["warn"],
     "react/forbid-prop-types": ["warn", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
     "react/no-danger-with-children": ["error"],
