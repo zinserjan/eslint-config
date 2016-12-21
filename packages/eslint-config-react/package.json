@@ -1,0 +1,36 @@
+{
+  "name": "@zinserjan/eslint-config-react",
+  "version": "0.0.0",
+  "description": "A set of opinionated ESLint rules tailored for React Components",
+  "main": "index.js",
+  "files": [
+    "*.md",
+    "index.js"
+  ],
+  "scripts": {
+    "test": "eslint-test-rules --good \"./test/**/*.good.js\" --warn \"./test/**/*.warn.js\" --error \"./test/**/*.error.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zinserjan/eslint-config"
+  },
+  "bugs": {
+    "url": "https://github.com/zinserjan/eslint-config/issues"
+  },
+  "author": "Jan-André Zinser",
+  "license": "MIT",
+  "dependencies": {
+    "eslint-plugin-jsx-a11y": "3.0.2",
+    "eslint-plugin-jsx-control-statements": "2.1.1",
+    "eslint-plugin-react": "6.8.0"
+  },
+  "peerDependencies": {
+    "eslint": "^3.9.1"
+  },
+  "devDependencies": {
+    "eslint-test-rules": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
