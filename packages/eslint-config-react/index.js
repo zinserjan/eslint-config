@@ -23,8 +23,8 @@ module.exports = {
     "jsx-quotes": ["error"],
     "no-multi-spaces": ["warn"],
     // eslint-plugin-react basic rules
-    // "react/forbid-component-props": ["warn", { "forbid": ["className", "style"] }],
-    "react/require-default-props": ["warn"],
+    "react/forbid-component-props": ["off", { "forbid": ["className", "style"] }],
+    "react/require-default-props": ["off"],
     "react/forbid-prop-types": ["error", { "forbid": ["any", "array", "object"] }],
     "react/no-children-prop": ["error"],
     "react/no-danger-with-children": ["error"],
@@ -43,7 +43,7 @@ module.exports = {
     "react/prop-types": ["warn"],
     "react/react-in-jsx-scope": ["error"],
     "react/require-render-return": ["error"],
-    "react/sort-comp": ["warn", {
+    "react/sort-comp": ["off", { // does not support instance properties yet, rule makes no sense without them
       order: [
         "type-annotations",
         "static-methods",
