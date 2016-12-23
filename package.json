@@ -3,6 +3,7 @@
   "scripts": {
     "postinstall": "lerna bootstrap",
     "build": "lerna run build",
+    "publish": "lerna publish",
     "test": "lerna run test"
   },
   "author": "Jan-André Zinser",
