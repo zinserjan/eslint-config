@@ -1,6 +1,6 @@
 {
   "name": "@zinserjan/eslint-config-base",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A set of opinionated ESLint rules tailored for JS development",
   "main": "index.js",
   "files": [
