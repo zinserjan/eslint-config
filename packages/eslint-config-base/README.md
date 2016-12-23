@@ -424,6 +424,105 @@ npm install --save-dev @zinserjan/eslint-config-base
 
 **[⬆ back to top](#table-of-contents)**
 
+## Comparison Operators & Equality
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Blocks
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+
+## Comments
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+
+## Whitespace
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+
+## Commas
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Semicolons
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Type Casting & Coercion
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Naming Conventions
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Functions
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Arrow Functions
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Hoisting
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Objects
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Arrays
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Destructuring
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Properties
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
+## Classes & Constructors
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
+
 ## Modules
 
   - Always use modules (`import`/`export`) over a non-standard module system. You can always transpile to your preferred module system.
@@ -643,3 +742,9 @@ npm install --save-dev @zinserjan/eslint-config-base
     import fooSass from "foo.scss";
     import barCss from "bar.css";
     ```
+
+## Iterators and Generators
+
+TODO
+
+**[⬆ back to top](#table-of-contents)**
