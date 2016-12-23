@@ -17,7 +17,7 @@ module.exports = {
     // strings
     "quotes": ["warn", "double", { "allowTemplateLiterals": false, avoidEscape: true }],
     "prefer-template": ["warn"],
-    "template-curly-spacing": ["warn", "always"],
+    "template-curly-spacing": ["warn", "never"],
     "no-eval": ["error"],
     "no-useless-escape": ["warn"],
     // modules

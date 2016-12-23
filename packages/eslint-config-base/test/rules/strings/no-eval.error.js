@@ -4,4 +4,4 @@ const obj = { x: "foo" };
 const key = "x";
 
 // bad
-const value = eval(`obj.${ key }`);
+const value = eval(`obj.${key}`);
