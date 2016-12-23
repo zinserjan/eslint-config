@@ -8,6 +8,7 @@ module.exports = {
   rules: {
     // variables
     "no-var": ["error"],
+    "prefer-const": ["warn"],
     "one-var": ["error", "never"],
     "no-undef": ["error"],
     "no-unused-vars": ["warn"],

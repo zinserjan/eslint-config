@@ -12,8 +12,7 @@ myFunc(function foo() {
   return foo;
 })();
 
-let myFunc;
-myFunc = setTimeout(function() {
+const myFunc = setTimeout(function() {
   // myFunc is considered used
   myFunc();
 }, 50);

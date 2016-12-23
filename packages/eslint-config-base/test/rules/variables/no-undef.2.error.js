@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, prefer-const */
 
 (function example() {
   // JavaScript interprets this as
